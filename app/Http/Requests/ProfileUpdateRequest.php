@@ -26,6 +26,18 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            // Alumni fields
+            'graduation_year' => ['nullable', 'string', 'max:255'],
+            'department' => ['nullable', 'string', 'max:255'],
+            'job_title' => ['nullable', 'string', 'max:255'],
+            'company' => ['nullable', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
+            'linkedin_url' => ['nullable', 'url', 'max:255'],
+            'bio' => ['nullable', 'string', 'max:1000'],
+            // Student fields
+            'enrollment_no' => ['nullable', 'string', 'max:255'],
+            'current_semester' => ['nullable', 'string', 'max:255'],
+            'phone_no' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $request->user()->load(['alumniProfile', 'studentProfile']),
         ]);
     }
 
@@ -26,13 +26,27 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
+
+        // Handle Role-Specific Profiles
+        if ($user->isAlumni()) {
+            $user->alumniProfile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $request->only(['graduation_year', 'department', 'job_title', 'company', 'location', 'linkedin_url', 'bio'])
+            );
+        } elseif ($user->isStudent()) {
+            $user->studentProfile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $request->only(['enrollment_no', 'department', 'current_semester', 'phone_no'])
+            );
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }

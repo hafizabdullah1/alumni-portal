@@ -13,6 +13,20 @@
                 </div>
             </div>
 
+            @if ($user->isAlumni())
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-7xl">
+                        @include('profile.partials.update-alumni-information-form')
+                    </div>
+                </div>
+            @elseif ($user->isStudent())
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-7xl">
+                        @include('profile.partials.update-student-information-form')
+                    </div>
+                </div>
+            @endif
+
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.update-password-form')
