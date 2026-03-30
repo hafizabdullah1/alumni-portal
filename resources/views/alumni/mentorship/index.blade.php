@@ -24,16 +24,20 @@
                             </div>
 
                             @if($request->status == 'pending')
-                                <div class="flex gap-2">
+                                <div class="flex gap-4">
                                     <form action="{{ route('mentorship.update', $request) }}" method="POST" class="flex-1">
                                         @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="accepted">
-                                        <button class="w-full py-2 bg-green-600 text-white rounded-lg text-sm font-bold hover:bg-green-700 transition">Accept</button>
+                                        <button type="submit" class="w-full py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-sm transition">
+                                            Accept Request
+                                        </button>
                                     </form>
                                     <form action="{{ route('mentorship.update', $request) }}" method="POST" class="flex-1">
                                         @csrf @method('PATCH')
                                         <input type="hidden" name="status" value="declined">
-                                        <button class="w-full py-2 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition">Decline</button>
+                                        <button type="submit" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-sm transition">
+                                            Decline
+                                        </button>
                                     </form>
                                 </div>
                             @endif

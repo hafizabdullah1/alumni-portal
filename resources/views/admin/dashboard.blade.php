@@ -9,22 +9,22 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div class="bg-indigo-600 overflow-hidden shadow-sm sm:rounded-lg text-white">
+                <div class="bg-indigo-50 border border-indigo-100 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <p class="text-xs font-bold uppercase tracking-widest opacity-75">{{ __('Total Alumni') }}</p>
-                        <p class="text-3xl font-black">{{ $totalAlumni }}</p>
+                        <p class="text-xs font-bold uppercase tracking-widest text-indigo-600">{{ __('Total Alumni') }}</p>
+                        <p class="text-3xl font-black text-gray-900">{{ $totalAlumni }}</p>
                     </div>
                 </div>
-                <div class="bg-amber-500 overflow-hidden shadow-sm sm:rounded-lg text-white">
+                <div class="bg-amber-50 border border-amber-100 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <p class="text-xs font-bold uppercase tracking-widest opacity-75">{{ __('Pending Approvals') }}</p>
-                        <p class="text-3xl font-black">{{ $pendingAlumni }}</p>
+                        <p class="text-xs font-bold uppercase tracking-widest text-amber-600">{{ __('Pending Approvals') }}</p>
+                        <p class="text-3xl font-black text-gray-900">{{ $pendingAlumni }}</p>
                     </div>
                 </div>
-                <div class="bg-emerald-600 overflow-hidden shadow-sm sm:rounded-lg text-white">
+                <div class="bg-emerald-50 border border-emerald-100 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6">
-                        <p class="text-xs font-bold uppercase tracking-widest opacity-75">{{ __('Total Students') }}</p>
-                        <p class="text-3xl font-black">{{ $totalStudents }}</p>
+                        <p class="text-xs font-bold uppercase tracking-widest text-emerald-600">{{ __('Total Students') }}</p>
+                        <p class="text-3xl font-black text-gray-900">{{ $totalStudents }}</p>
                     </div>
                 </div>
             </div>
