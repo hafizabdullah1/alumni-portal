@@ -36,6 +36,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Student Services (Results & File Status)
     Route::get('/my-services', [StudentServicesController::class, 'index'])->name('student.services');
+    Route::get('/files/{file}/download', [StudentServicesController::class, 'downloadFile'])->name('files.download');
 
     // Alumni-only Job posting
     Route::middleware(['verified_alumni'])->group(function () {

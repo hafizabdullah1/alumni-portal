@@ -6,10 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class FileTrack extends Model
 {
-    protected $fillable = ['user_id', 'file_no', 'title', 'current_deparment', 'status', 'remarks'];
+    protected $fillable = ['user_id', 'title', 'description', 'file_path', 'is_global'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function isGlobal()
+    {
+        return $this->is_global;
     }
 }

@@ -17,38 +17,40 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">File No</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title/Applicant</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Current Department</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Update</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title & Details</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Target Audience</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uploaded On</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach ($files as $file)
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap font-bold">{{ $file->file_no }}</td>
                                 <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900">{{ $file->title }}</div>
-                                    <div class="text-xs text-gray-500">{{ $file->user->name }}</div>
+                                    <div class="text-sm font-bold text-gray-900">{{ $file->title }}</div>
+                                    @if($file->description)
+                                        <div class="text-xs text-gray-500 mt-1 truncate max-w-xs">{{ $file->description }}</div>
+                                    @endif
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $file->current_deparment }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 uppercase">
-                                        {{ $file->status }}
-                                    </span>
+                                    @if($file->is_global)
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 uppercase">
+                                            All Students (Global)
+                                        </span>
+                                    @else
+                                        <span class="text-sm text-gray-900 font-medium">{{ optional($file->user)->name }}</span>
+                                        <div class="text-xs text-gray-500">{{ optional($file->user)->email }}</div>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $file->created_at->format('M d, Y') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <form action="{{ route('admin.files.update', $file) }}" method="POST" class="flex items-center space-x-2">
+                                    <form action="{{ route('admin.files.update', $file) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this file?');">
                                         @csrf
                                         @method('PATCH')
-                                        <input type="text" name="current_deparment" value="{{ $file->current_deparment }}" class="text-xs rounded border-gray-300 w-24">
-                                        <select name="status" class="text-xs rounded border-gray-300">
-                                            <option value="pending" {{ $file->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                            <option value="processing" {{ $file->status == 'processing' ? 'selected' : '' }}>Processing</option>
-                                            <option value="dispatched" {{ $file->status == 'dispatched' ? 'selected' : '' }}>Dispatched</option>
-                                        </select>
-                                        <x-primary-button class="!py-1 !px-2 text-[10px]">OK</x-primary-button>
+                                        <input type="hidden" name="delete" value="1">
+                                        <x-danger-button class="!py-1 !px-2 text-xs">Delete</x-danger-button>
                                     </form>
                                 </td>
                             </tr>

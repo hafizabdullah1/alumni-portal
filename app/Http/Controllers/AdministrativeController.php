@@ -25,21 +25,37 @@ class AdministrativeController extends Controller
     public function storeFile(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'file_no' => 'required|unique:file_tracks',
+            'user_id' => 'required',
             'title' => 'required',
-            'current_deparment' => 'required',
-            'status' => 'required'
+            'document' => 'required|file|mimes:pdf,doc,docx,jpg,png,zip|max:10240', // 10MB limit
         ]);
 
-        FileTrack::create($request->all());
-        return redirect()->route('admin.files.index')->with('status', 'File tracking record created.');
+        $is_global = $request->user_id === 'global';
+        $user_id = $is_global ? null : $request->user_id;
+
+        // Store file securely in storage/app/documents
+        $path = $request->file('document')->store('documents', 'local');
+
+        FileTrack::create([
+            'user_id' => $user_id,
+            'file_path' => $path,
+            'title' => $request->title,
+            'description' => $request->description,
+            'is_global' => $is_global,
+        ]);
+
+        return redirect()->route('admin.files.index')->with('status', 'File uploaded successfully.');
     }
 
     public function updateFile(Request $request, FileTrack $file)
     {
-        $file->update($request->only(['current_deparment', 'status', 'remarks']));
-        return back()->with('status', 'File updated.');
+        // For deleting files to re-claim space
+        if ($request->has('delete')) {
+            \Illuminate\Support\Facades\Storage::disk('local')->delete($file->file_path);
+            $file->delete();
+            return back()->with('status', 'File deleted.');
+        }
+        return back();
     }
 
     // Exam Results
