@@ -60,12 +60,12 @@ cd alumni-portal
 composer setup
 # equivalent manual steps:
 # composer install
-# cp .env.example .env && php artisan key:generate
+# create .env && php artisan key:generate
 # php artisan migrate
 # npm install && npm run build
 ```
 
-If `.env.example` is missing locally, create `.env` with at least:
+Create `.env` with at least:
 
 | Variable | Required | Description |
 | --- | --- | --- |
@@ -97,7 +97,7 @@ composer test    # php artisan test
 ## Roadmap
 
 - [ ] Replace stock Laravel README with this project README
-- [ ] Add `.env.example`, MIT license, topics, social preview
+- [ ] MIT license, topics, social preview
 - [ ] Deploy demo (Laravel Cloud / Forge / VPS)
 - [ ] Complete checklist items in `docs/requirements_checklist.md`
 - [ ] Expand Feature coverage for file-tracking and mentorship
