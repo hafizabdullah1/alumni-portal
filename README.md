@@ -1,58 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Alumni Portal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+University alumni & student portal — verified alumni, jobs, mentorship, news/events, and administrative file tracking.
 
-## About Laravel
+## Live demo
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+_Not deployed yet — add a production URL here after first host setup._
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Screenshots
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Landing | Dashboard | Jobs / mentorship |
+| --- | --- | --- |
+| ![Landing](docs/screenshots/landing.png) | ![Dashboard](docs/screenshots/dashboard.png) | ![Jobs](docs/screenshots/jobs.png) |
 
-## Learning Laravel
+## Key features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Role-aware users: admin, alumni, student (with verification gates)
+- Alumni registration + admin verification before privileged actions
+- Job/internship postings (verified alumni)
+- Mentorship requests between students and alumni
+- News & events management
+- Student services and exam-result related admin flows
+- File tracking / movement across departments (timestamped history)
+- Laravel Feature tests (`tests/Feature/AlumniPortalTest.php` and auth suite)
+- Product docs: SRS, UML, schema, UI flow under `docs/`
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Tech stack
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+| Layer | Choice |
+| --- | --- |
+| Backend | Laravel 13 (PHP 8.3) |
+| Frontend | Blade + Vite + Tailwind + Alpine |
+| Auth | Laravel session auth (Breeze-style controllers) |
+| Tests | PHPUnit Feature/Unit |
+| DB | SQLite/MySQL via Laravel config |
 
-## Agentic Development
+## Architecture (brief)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```
+Blade views + Vite assets
+    │
+Laravel HTTP (controllers, Form Requests, middleware)
+    ├─ AdminMiddleware / VerifiedAlumniMiddleware
+    ├─ Models: AlumniProfile, JobPosting, MentorshipRequest, FileTrack, …
+    └─ migrations + Feature tests
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Getting started
 
-## Contributing
+### Prerequisites
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- PHP 8.3+, Composer, Node.js 18+
+- SQLite (default) or MySQL/Postgres
 
-## Code of Conduct
+### Install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+git clone https://github.com/hafizabdullah1/alumni-portal.git
+cd alumni-portal
+composer setup
+# equivalent manual steps:
+# composer install
+# cp .env.example .env && php artisan key:generate
+# php artisan migrate
+# npm install && npm run build
+```
 
-## Security Vulnerabilities
+If `.env.example` is missing locally, create `.env` with at least:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Variable | Required | Description |
+| --- | --- | --- |
+| `APP_NAME` | No | App display name |
+| `APP_ENV` | Yes | `local` / `production` |
+| `APP_KEY` | Yes | `php artisan key:generate` |
+| `APP_URL` | Yes | Base URL |
+| `DB_CONNECTION` | Yes | e.g. `sqlite` or `mysql` |
+| `DB_DATABASE` | Yes | DB name or sqlite path |
+| `DB_USERNAME` / `DB_PASSWORD` | If MySQL | Credentials |
 
-## License
+### Run
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+composer dev     # serve + queue + logs + vite (concurrently)
+# or separately:
+php artisan serve
+npm run dev
+
+composer test    # php artisan test
+```
+
+## Deployment
+
+- Classic Laravel host (Forge, Vapor, shared PHP + Nginx) or Docker.
+- Set production `.env`, run `php artisan migrate --force`, `npm run build`, point web root to `public/`.
+- Add the live URL to the GitHub **Website** field once deployed.
+
+## Roadmap
+
+- [ ] Replace stock Laravel README with this project README
+- [ ] Add `.env.example`, MIT license, topics, social preview
+- [ ] Deploy demo (Laravel Cloud / Forge / VPS)
+- [ ] Complete checklist items in `docs/requirements_checklist.md`
+- [ ] Expand Feature coverage for file-tracking and mentorship
+
+## Author
+
+**Hafiz Abdullah** — [GitHub](https://github.com/hafizabdullah1) · [hafizabdullah.site](https://hafizabdullah.site)
