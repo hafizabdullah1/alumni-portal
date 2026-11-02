@@ -6,12 +6,6 @@ University alumni & student portal — verified alumni, jobs, mentorship, news/e
 
 _Not deployed yet — add a production URL here after first host setup._
 
-## Screenshots
-
-| Landing | Dashboard | Jobs / mentorship |
-| --- | --- | --- |
-| ![Landing](docs/screenshots/landing.png) | ![Dashboard](docs/screenshots/dashboard.png) | ![Jobs](docs/screenshots/jobs.png) |
-
 ## Key features
 
 - Role-aware users: admin, alumni, student (with verification gates)
